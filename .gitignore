@@ -2,3 +2,4 @@
 .lock*
 /cache
 *.sqlite
+.env

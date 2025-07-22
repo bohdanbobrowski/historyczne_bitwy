@@ -3,4 +3,4 @@
 /cache
 *.sqlite
 .env
-raport*.csv
+report*.csv

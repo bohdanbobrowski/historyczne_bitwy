@@ -9,7 +9,7 @@ Historyczne bitwy – polska seria wydawnicza o charakterze popularnonaukowym wy
 
 ## Instalacja
 
-    git clone
+    git clone https://github.com/bohdanbobrowski/historyczne_bitwy.git
     cd historyczne_bitwy
     python -m venv venv
     source venv/bin/activate

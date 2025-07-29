@@ -29,6 +29,22 @@ Efektem działania skryptu powinien być plik `historyczne_bitwy.sqlite` o wielk
     
     python generuj_raport.py
 
+### 3. Pobieranie danych z Wikipedii
+
+Osobnym skryptem jest `historyczne_bitwy_wikipedia.py` który działa w oparciu o plik `historyczne_bitwy_wikipedia.csv`.
+Uruchomienie tego skryptu powoduje iterację po zawartości pliku csv i jego aktualizację:
+1. jeżeli książka ma przypisany adres na wiki (zazwyczaj dot. danej bitwy lub miejsca w którym się toczyła), pobierane są współrzędne geograficzne umieszczone w tym artykule.
+2. jeżeli współrzędnych brak - w pliku csv zostanie wstawiony ciąg znaków ???
+3. jeżeli brak linku do wiki - skrypt próbuje szukać.
+
+Uruchamianie:
+
+
+    python historyczne_bitwy_wikipedia.py
+
+Plik csv można wprost zaimportować do google maps by utworzyć włąsną mapę.
+
+
 ## Licencja i gwarancja
 
 Skrypty sworzyłem na własny użytek. Każdy użytkownik korzysta z oprogramowania na własną odpowiedzialność.

@@ -1,9 +1,9 @@
 from lxml import html
+from lat_lon_parser import parse
+from historyczne_bitwy.models import LubimyCzytac, HistoryczneBitwy
 
-from historyczne_bitwy.models import LubimyCzytac
 
-
-def parse_content(content: bytes) -> list[LubimyCzytac]:
+def parse_lubimyczytac(content: bytes) -> list[LubimyCzytac]:
     result = []
     tree = html.fromstring(content.decode("utf-8"))
     book_elements = tree.xpath("//*[@id='ksiazki']/div")
@@ -64,4 +64,33 @@ def parse_content(content: bytes) -> list[LubimyCzytac]:
             result.append(book)
         except IndexError:
             pass
+    return result
+
+
+def parse_wikipedia_search(content: bytes, hb: HistoryczneBitwy) -> str | None:
+    tree = html.fromstring(content.decode("utf-8"))
+    search_results = tree.xpath("//*[contains(@class, 'mw-search-result-heading')]/a")
+    search_for = ["bitwa", "oblężenie", "operacja", "zdobycie", "powstanie"]
+    for element in search_results:
+        title = element.attrib["title"]
+        for s in search_for:
+            if title.lower().find(s) >= 0:
+                return "https://pl.wikipedia.org" + element.attrib["href"]
+    for element in search_results:
+        title = element.attrib["title"]
+        if hb.title.lower().find(title.lower()) >= 0:
+            return "https://pl.wikipedia.org" + element.attrib["href"]
+    return None
+
+
+def parse_wikipedia_location(content: bytes) -> tuple[float, float] | None:
+    tree = html.fromstring(content.decode("utf-8"))
+    result = None
+    try:
+        latitude = tree.xpath("//span[contains(@class,'latitude')]")[0].text
+        longitude = tree.xpath("//span[contains(@class,'longitude')]")[0].text
+        if latitude and longitude:
+            result = (parse(latitude), parse(longitude))
+    except IndexError:
+        pass
     return result

@@ -7,7 +7,7 @@ from unidecode import unidecode
 import sqlite3
 
 from historyczne_bitwy.download_tools import get_content
-from historyczne_bitwy.parse import parse_content
+from historyczne_bitwy.parse import parse_lubimyczytac
 from historyczne_bitwy.database import conn
 from historyczne_bitwy.models import HistoryczneBitwy, LubimyCzytac
 
@@ -43,7 +43,7 @@ def get_lubimyczytac(
     lc_list: set[LubimyCzytac] = set()
     for hb in hb_list:
         hb_request = hb.get_lubimy_czytac_request()
-        search_results = parse_content(get_content(hb_request.url))
+        search_results = parse_lubimyczytac(get_content(hb_request.url))
         searched_book = None
         if search_results:
             for book in search_results:

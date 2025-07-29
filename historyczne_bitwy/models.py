@@ -64,6 +64,8 @@ class HistoryczneBitwy(Book):
     __tablename__ = "historyczne_bitwy"
     date: str
     published: list[str]
+    wikipedia_url: str|None = None
+    location: tuple[float,float]|None = None
 
     def __hash__(self):
         return hash(self.id)
@@ -76,6 +78,14 @@ class HistoryczneBitwy(Book):
         req.prepare_url(
             "https://lubimyczytac.pl/szukaj/ksiazki",
             {"phrase": self.title + " " + self.author.split(" ")[-1]},
+        )
+        return req
+
+    def get_wikipedia_request(self) -> requests.models.PreparedRequest:
+        req = requests.models.PreparedRequest()
+        req.prepare_url(
+            "https://pl.wikipedia.org/w/index.php",
+            {"search": self.title.split(',')[0]},
         )
         return req
 
